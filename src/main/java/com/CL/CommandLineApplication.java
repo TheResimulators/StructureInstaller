@@ -37,10 +37,10 @@ public class CommandLineApplication {
                 }
             } while (!Files.exists(path) || !Files.isDirectory(path) );
 
-            File folder = path.resolve("test").toFile();
+            File folder = path.resolve("resources").resolve("simukraft").resolve("structures").toFile();
             URL jarlocation = getClass().getProtectionDomain().getCodeSource().getLocation();
             File jarFile = new File(jarlocation.getPath());
-            Path StructurePath = Paths.get( jarFile.getParent() + "/structures");
+            Path StructurePath = Paths.get( jarFile.getParent());
             System.out.println(StructurePath.toAbsolutePath());
             File structureFiles = StructurePath.toFile();
             File[] files = structureFiles.listFiles();
@@ -51,8 +51,6 @@ public class CommandLineApplication {
             String continuing = reader.readLine();
             if (continuing.equals("y"))
             {
-                System.out.println(folder);
-                System.out.println(structureFiles);
 
                 copyDirectoryJavaNIO(structureFiles.toPath(),folder.toPath());
                 System.out.println("Copy files successfully");
@@ -100,6 +98,7 @@ public class CommandLineApplication {
                 count += countFiles(file.listFiles());
             }else
             {
+                if (file.getName().contains(".jar"))continue;
                 count++;
             }
         }
@@ -139,6 +138,7 @@ public class CommandLineApplication {
 
         } else {
             // if file exists, replace it
+            if (source.toFile().getName().contains(".jar")) return;
             Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
             System.out.println(
                 String.format("Copied File \t%s  \t%d / %d", source.toFile().getName(), fileProgress, filecount)
