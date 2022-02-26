@@ -74,22 +74,7 @@ public class CommandLineApplication {
 
 
     }
-
-
-
-    private File getFile(String fileName) throws IOException
-    {
-        ClassLoader classLoader = getClass().getClassLoader();
-        URL resource = classLoader.getResource(fileName);
-
-        if (resource == null) {
-            System.out.println("File Not Found");
-        } else {
-            return new File(resource.getFile());
-        }
-        return null;
-    }
-
+    
 
     void printFiles(File[] files){
         for (File file: files){
