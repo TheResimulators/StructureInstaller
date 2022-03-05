@@ -20,29 +20,37 @@ public class CommandLineApplication {
 
     public void startApplication(){
         System.out.println("Welcome to the Structure Installer");
-        System.out.println("Please enter a minecraft Dir");
+        System.out.println("Enter Folder containing Structures to install");
         BufferedReader reader = new BufferedReader(
             new InputStreamReader(System.in));
-        Path path;
+        Path DestinationPath;
+        Path SourcePath;
         FileInputStream srcStream = null;
         FileOutputStream destStream = null;
         try {
+            String source;
+            do {
+
+                source = reader.readLine();
+                SourcePath = Paths.get(source);
+                if (!Files.exists(SourcePath)){
+                    System.out.println("Please Input a valid file Path to a folder");
+                }
+            } while (!Files.exists(SourcePath) || !Files.isDirectory(SourcePath) );
+            System.out.println("Please enter a minecraft Dir");
             String location;
             do {
 
                 location = reader.readLine();
-                path = Paths.get(location);
-                if (!Files.exists(path)){
+                DestinationPath = Paths.get(location);
+                if (!Files.exists(DestinationPath)){
                     System.out.println("Please Input a valid file Path to a folder");
                 }
-            } while (!Files.exists(path) || !Files.isDirectory(path) );
+            } while (!Files.exists(DestinationPath) || !Files.isDirectory(DestinationPath) );
 
-            File folder = path.resolve("resources").resolve("simukraft").resolve("structures").toFile();
-            URL jarlocation = getClass().getProtectionDomain().getCodeSource().getLocation();
-            File jarFile = new File(jarlocation.getPath());
-            Path StructurePath = Paths.get( jarFile.getParent());
-            System.out.println(StructurePath.toAbsolutePath());
-            File structureFiles = StructurePath.toFile();
+            File folder = DestinationPath.resolve("resources").resolve("simukraft").resolve("structures").toFile();
+            System.out.println(SourcePath.toAbsolutePath());
+            File structureFiles = SourcePath.toFile();
             File[] files = structureFiles.listFiles();
             printFiles(files);
             filecount = countFiles(files);
@@ -72,7 +80,7 @@ public class CommandLineApplication {
 
 
     }
-    
+
 
     void printFiles(File[] files){
         for (File file: files){
