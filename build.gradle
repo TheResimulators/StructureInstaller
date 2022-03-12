@@ -13,6 +13,47 @@ application {
 
 }
 
+String resourceDir = "$projectDir/src/main/resources/com/CL/"
+List<String> list = new ArrayList<String>()
+
+tasks.register("CopyStructures") {
+    dependsOn 'createFile'
+}
+task getStructures() {
+
+    doLast{
+        def folders = file(resourceDir + "/Structures").listFiles()
+
+        folders.each {File file ->
+            def files = file.listFiles()
+            files.each {File Structure ->
+                if (Structure.isFile())
+                {
+                    ant.loadfile(srcfile : Structure,property:Structure.name)
+                    println "Adding $Structure.name to list from folder $file.name"
+                    list.add("$file.name, $Structure.name")
+                }
+
+            }
+            println " "
+        }
+    }
+}
+
+task createFile(dependsOn: getStructures){
+    doLast {
+        String string = ""
+        list.each { String structure ->
+            string += structure + "\n"
+        }
+        println "Writing to File"
+        String location = resourceDir + "/Generated"
+        location += "/StructureList.txt"
+        def structureList = new File(location)
+        structureList.write(string);
+    }
+}
+
 
 
 
