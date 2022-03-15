@@ -55,12 +55,13 @@ task createFile(dependsOn: getStructures){
 }
 
 
-
-
 jar {
+
+
     manifest {
         attributes 'Main-Class': "com.UI.MainApp"
         destinationDir(new File("G:\\GitHub\\StructureInstaller\\build\\Releases"))
     }
+    archiveName("Installer-v0.0.1-alpha.02.jar")
 }
 

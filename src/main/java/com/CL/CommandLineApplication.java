@@ -14,7 +14,8 @@ public class CommandLineApplication {
     static int fileProgress = 1;
 
     public CommandLineApplication(){
-        startApplication();
+        //startApplication();
+        BundledInstaller installer = new BundledInstaller();
     }
 
 
